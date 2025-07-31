@@ -1,15 +1,21 @@
-#!/bin/bash
+#!/bin.bash
 
+target=$(cat "target.txt")
+position=0
 
-start_point=0
-
-
-for thing in $(cat "puzzleInput.txt"); do
-#	echo "<$thing>"
-	if [[ "$thing" == '(' ]]; then
-		((start_point++))
-	elif [[ "$thing" == ')' ]]; then
-		((start_point--))
+floor=0
+while IFS= read -r -n1 char; do
+	#echo "$char"
+	if [[ "$char" == '(' ]]; then
+		((floor++))
+		((position++))
+	elif [[ "$char" == ')' ]]; then
+		((floor--))
+		((position++))
 	fi
-done
-echo $start_point
+
+	if [[ "$floor" == -1 ]]; then
+		echo $position
+		return 1
+	fi
+done <puzz_input
